@@ -1,0 +1,869 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Abex - Book Store</title>
+      
+    <link rel="icon" href="static/images/main-logo.png" type="image/icon type">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" type="text/css" href="static/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="static/icomoon/icomoon.css" />
+    <link rel="stylesheet" type="text/css" href="static/css/vendor.css" />
+    <link rel="stylesheet" type="text/css" href="static/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+
+    <style>
+      header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        left: 0;
+        height: 70px;
+        border: 1px black solid;
+
+        color: white;
+        font-family: 'Adani regular';
+        margin: 0px;
+      
+        background: linear-gradient(45deg, white 18%, #023e7d 18%);
+
+
+      
+      }
+      footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        height: 5vh;
+        
+      }
+      .containers {
+        position: fixed;
+        top: 75px;
+        left: 10%;
+        right: 0;
+        width: 80%;
+        bottom: 5.5vh;
+        padding: 5px;
+      }
+      #viewer {
+        height: 100%;
+        overflow: auto !important;
+        background-color: #fff;
+      }
+      .leftbutton {
+        position: fixed;
+        top: 75px;
+        left: 0;
+        right: 90%;
+        width: 10%;
+        bottom: 5.5vh;
+        text-align: center;
+
+        background-color: #fff;
+      }
+      .Rightbutton {
+        position: fixed;
+        top: 75px;
+        left: 90%;
+        right: 0;
+        width: 10%;
+        bottom: 5.5vh;
+        text-align: center;
+        background-color: #fff;
+      }
+
+      .fontstyle1 {
+        font-family: "Adani regular";
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 0.25rem;
+        padding: 5px;
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .fontstyle {
+        font-family: "Adani regular";
+        font-weight: 600;
+      }
+      a {
+        color: black;
+      }
+
+      #container1 {
+        display: flex; /* establish flex container */
+        flex-direction: row; /* default value; can be omitted */
+        flex-wrap: nowrap; /* default value; can be omitted */
+        justify-content: space-between; /* switched from default (flex-start, see below) */
+        font-family: "Adani regular";
+      }
+
+      .btn-circle.btn-xl {
+        width: 30px;
+        height: 30px;
+        padding: 6px 0px;
+        border-radius: 15px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.42857;
+        background-color: #337ab7;
+      }
+      .btn-circle.btn-xll {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
+
+  body{
+    background-color: #fff;
+    cursor: pointer;
+  }
+  .zoom {
+ 
+  transition: transform .2s; /* Animation */
+ 
+}
+.zoomm:hover {
+  transform: scale(1.3); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.zoom:hover {
+  transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+div.borderXwidth a:before, div.borderXwidth a:after
+{
+    position: absolute;
+    opacity: 0;
+    width: 0%;
+    height: 2px;
+    content: '';
+    background: #FFF;
+    transition: all 0.3s;
+}
+
+div.borderXwidth a:before
+{
+    left: 0px;
+    top: 0px;
+}
+
+div.borderXwidth a:after
+{
+    right: 0px;
+    bottom: 0px;
+}
+
+div.borderXwidth a:hover:before, div.borderXwidth a:hover:after
+{
+    opacity: 1;
+    width: 100%;
+}
+#tocview  {
+
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+#tocview li {
+  position: relative;
+    display: block;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+    cursor: pointer;
+    
+}
+#tocview li:hover {
+  box-shadow: inset 350px 0 0 0 #54b3d6;
+ 
+  font-size: 19px;
+  
+  
+}
+/* .offcanvas
+{
+  --bs-offcanvas-width:300px  !important;
+} */
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-2" style="padding-top: 10px; ">
+           
+            <a href="home"><img src="static/images/main-logo.png"  class="rounded zoom " width="70px"  alt="logo" style="background-color: #fff;padding-top: -20px;"></a>
+          </div>
+
+          <div class="col-md-10 borderXwidth" style="padding-top: 17px;">
+            <nav id="navbar">
+              <div class="main-menu stellarnav">
+                <ul class="menu-list">
+                  <li class="menu-item active">
+                    <a href="home" style="color: white;">Home</a>
+                  </li>
+                  <li>
+                    <a
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasScrolling"
+                      aria-controls="offcanvasScrolling"
+                      style="text-transform: capitalize"
+                      >contents</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasScrolling2"
+                      aria-controls="offcanvasScrolling2"
+                      style="text-transform: capitalize"
+                      >setting</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasScrolling3"
+                      aria-controls="offcanvasScrolling3"
+                      style="text-transform: capitalize"
+                      >highlights</a
+                    >
+                  </li>
+                  <li class="menu-item has-sub">
+                    <!-- <a href="#pages" class="nav-link">Pages</a> -->
+
+                    <ul>
+                      <!-- <li class="active"><a href="index.html">Home</a></li>
+											<li><a href="about.html">About <span class="badge bg-dark">PRO</span></a></li>
+											<li><a href="styles.html">Styles <span class="badge bg-dark">PRO</span></a></li>
+											<li><a href="blog.html">Blog <span class="badge bg-dark">PRO</span></a></li>
+											<li><a href="single-post.html">Post Single <span class="badge bg-dark">PRO</span></a></li>
+											<li><a href="shop.html">Our Store <span class="badge bg-dark">PRO</span></a></li>
+											<li><a href="single-product.html">Product Single <span class="badge bg-dark">PRO</span></a></li>
+											<li><a href="contact.html">Contact <span class="badge bg-dark">PRO</span></a></li>
+											<li><a href="thank-you.html">Thank You <span class="badge bg-dark">PRO</span></a></li> -->
+                    </ul>
+                  </li>
+                  <!-- <li class="menu-item"><a href="#featured-books" class="nav-link">Featured</a></li>
+									<li class="menu-item"><a href="#popular-books" class="nav-link">Popular</a></li>
+									<li class="menu-item"><a href="#special-offer" class="nav-link">Offer</a></li>
+									<li class="menu-item"><a href="#latest-blog" class="nav-link">Articles</a></li>
+									<li class="menu-item"><a href="#download-app" class="nav-link">Download App</a></li>
+									<li class="menu-item"><a href="https://templatesjungle.gumroad.com/l/booksaw-free-html-bookstore-template" class="nav-link btn btn-outline-dark rounded-pill m-0" target="_blank">Get PRO</a></li> -->
+                </ul>
+
+                <div class="hamburger">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="leftbutton">
+      <button
+        class="prev slick-arrow btn-circle zoomm btn-circle btn-xl"
+        id="prev"
+        style="background-color: #023e7d;  top: 45%;width: 30px;" 
+      >
+        <i class="icon icon-arrow-left" style="color: White"></i>
+      </button>
+    </div>
+    <div class="containers fontstyle1">
+      
+      
+	<div id="controls">
+		
+      <div id="viewer" style="width: 100%"></div>
+    </div>
+    <div class="Rightbutton">
+      <button
+        class="next slick-arrow zoomm btn-circle btn-xl"
+        id="next"
+        style="background-color: #023e7d;  top: 45%"
+      >
+        <i class="icon icon-arrow-right" style="color: White"></i>
+      </button>
+    </div>
+
+    <div
+      class="offcanvas offcanvas-start"
+      data-bs-scroll="true"
+      data-bs-backdrop="false"
+      tabindex="-1"
+      id="offcanvasScrolling"
+      aria-labelledby="offcanvasScrollingLabel2"
+      style="margin-top: 72px; background-color: #eef2f5"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title fontstyle" id="offcanvasScrollingLabel">
+          Contents
+        </h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <hr style="margin: 0px" />
+      <div class="offcanvas-body">
+        <div class="card text-center mx-auto" style="width: 18rem">
+          <img id="cover" class="card-img-top" alt="No cover Page Avaliable" />
+          <div class="card-body">
+            <h5 class="card-title fontstyle" id="title"></h5>
+            <h5 class="card-text fontstyle" id="author"></h5>
+          </div>
+        </div>
+        <div id="tocView"  class="p-1 fontstyle"></div>
+
+        <br />
+      </div>
+    </div>
+
+    <div
+      class="offcanvas offcanvas-end"
+      data-bs-scroll="true"
+      data-bs-backdrop="false"
+      tabindex="-1"
+      id="offcanvasScrolling2"
+      aria-labelledby="offcanvasScrollingLabel"
+      style="margin-top: 72px; background-color: #eef2f5"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title fontstyle" id="offcanvasScrollingLabel">
+          Setting
+        </h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <hr style="margin: 0px" />
+      <div class="offcanvas-body">
+        <div class="card" style="width: 23rem">
+          <div class="card-body">
+            <h5 class="card-title fontstyle text-center">Font Size</h5>
+
+            <button
+              type="button"
+              class="btn btn-default btn-circle btn-xl"
+              style="margin-left: 10px"
+              onclick="increaseFontSize()"
+            >
+              <i class="fa fa-plus" style="color: white"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-default btn-circle btn-xl"
+              style="margin-left: 250px"
+              onclick="decreaseFontSize()"
+              style="margin-left: 80px"
+            >
+              <i class="fa fa-minus" style="color: white"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card" style="width: 23rem; margin-top: 5px">
+          <div class="card-body">
+            <h5 class="card-title fontstyle text-center">Select Color Theme</h5>
+
+            <input
+              type="color"
+              class="form-control form-control-color"
+              id="themeColor"
+              onchange="changeThemeColor(this.value)"
+              value="#ffffff"
+              title="Choose your color"
+              style="width: 100px; border-radius: 2px solid black"
+            />
+          </div>
+        </div>
+        <div class="card" style="width: 23rem; margin-top: 5px">
+          <div class="card-body">
+            <h5 class="card-title fontstyle text-center">Full Screen</h5>
+
+            <button
+              type="button"
+              class="btn btn-default btn-circle btn-xl"
+              style="margin-left: 10px"
+              id="goFS"
+              onclick="toggleFullScreen()"
+            >
+              <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card" style="width: 23rem; margin-top: 5px">
+          <div class="card-body">
+            <h5 class="card-title fontstyle text-center">Font Style</h5>
+
+            <div class="form-group">
+              <label for="sel1">Select list:</label>
+
+              <select
+                id="comboA"
+                class="form-control"
+                onchange="getComboA(this)"
+              >
+                <option value="Adani regular">Adani regular</option>
+                <option value="Sans Serif">Sans Serif</option>
+                <option value="Arial">Arial</option>
+                <option value="Georgia ">Georgia</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br />
+    </div>
+
+    <div
+      class="offcanvas offcanvas-end"
+      data-bs-scroll="true"
+      data-bs-backdrop="false"
+      tabindex="-1"
+      id="offcanvasScrolling3"
+      aria-labelledby="offcanvasScrolling3"
+      style="margin-top: 72px; background-color: #eef2f5"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title fontstyle" id="offcanvasScrollingLabel">
+          Highlights
+        </h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <hr style="margin: 0px" />
+      <div class="offcanvas-body">
+        <div id="highlights-container"></div>
+
+        <br />
+      </div>
+    </div>
+
+    <footer
+      style="
+        background-color: #023e7d;
+        color: #fff;
+        font-family: 'Adani regular';
+        margin: 0px;
+      "
+    >
+      <center>
+        <div><span id="currntchp">Current Chapter...</span></div>
+      </center>
+    </footer>
+
+ <script type="text/javascript">
+      var readingprograss = document.getElementById("readingprograss");
+      var book = ePub("{{ ebook }}");
+      var rendition = book.renderTo("viewer", {
+        width: "100%",
+
+        //  manager: "continuous",
+
+        flow: "scrolled",
+      });
+
+      let fontSize = 18;
+
+
+      const cLocation = localStorage.getItem("currentLocation");
+      if (cLocation) {
+        try {
+          const locationdata = JSON.parse(cLocation);
+          if (locationdata.start) {
+            rendition.display(
+              JSON.parse(localStorage.getItem("currentLocation")).start.cfi
+            );
+          } else {
+            rendition.display();
+          }
+        } catch (error) {
+          rendition.display();
+        }
+      } else {
+        rendition.display();
+      }
+
+      book.loaded.navigation.then(function (toc) {
+        var $nav = document.getElementById("tocView"),
+          docfrag = document.createDocumentFragment();
+
+        toc.forEach(function (chapter, index) {
+          var item = document.createElement("li");
+          var link = document.createElement("a");
+          link.id = "chap-" + chapter.id;
+
+          link.textContent = chapter.label;
+          link.href = chapter.href;
+          item.appendChild(link);
+
+          docfrag.appendChild(item);
+
+          link.onclick = function () {
+            var url = link.getAttribute("href");
+
+            rendition.display(url);
+            return false;
+          };
+        });
+
+        $nav.appendChild(docfrag);
+      });
+
+      book.loaded.metadata.then(function (meta) {
+        var $title = document.getElementById("title");
+        // var $author = document.getElementById("author");
+        var $author = "";
+        var $cover = document.getElementById("cover");
+        var $nav = document.getElementById("navigation");
+
+        $title.textContent = meta.title;
+        $author.textContent = meta.creator;
+        if (book.archive) {
+          book.archive.createUrl(book.cover).then(function (url) {
+            $cover.src = url;
+          });
+        } else {
+          $cover.src = book.cover;
+        }
+
+        if ($nav.offsetHeight + 60 < window.innerHeight) {
+          $nav.classList.add("fixed");
+        }
+      });
+
+      function increaseFontSize() {
+        fontSize += 2;
+        rendition.themes.fontSize(fontSize + "px");
+        localStorage.setItem("FontSize", fontSize + "px");
+      }
+
+      function decreaseFontSize() {
+        if (fontSize > 10) {
+          fontSize -= 2;
+          rendition.themes.fontSize(fontSize + "px");
+          localStorage.setItem("FontSize", fontSize + "px");
+        }
+      }
+
+      function applyFontStyles() {
+        document.getElementById("comboA").onchange = function () {
+          var value = document.getElementById("comboA").value;
+
+          const contentDoc = rendition.getContents()[0].document;
+
+          contentDoc.querySelector("body").style.fontFamily = value;
+          localStorage.setItem("FontFamily", value);
+        };
+
+        const FontFamily = localStorage.getItem("FontFamily");
+
+        const contentDoc = rendition.getContents()[0].document;
+
+        contentDoc.querySelector("body").style.fontFamily = FontFamily;
+      }
+
+      rendition.on("rendered", function (section) {
+        applyFontStyles();
+      });
+
+      function changeThemeColor(color) {
+        rendition.themes.override("background", color);
+        localStorage.setItem("BGCOLOR", color);
+        var reader = document.getElementById("viewer");
+        reader.style.backgroundColor = color;
+      }
+
+      var next = document.getElementById("next");
+      next.addEventListener(
+        "click",
+        function () {
+          rendition.next();
+        },
+        false
+      );
+
+      var prev = document.getElementById("prev");
+      prev.addEventListener(
+        "click",
+        function () {
+          rendition.prev();
+        },
+        false
+      );
+
+      var keyListener = function (e) {
+        // Left Key
+        if ((e.keyCode || e.which) == 37) {
+          rendition.prev();
+        }
+
+        // Right Key
+        if ((e.keyCode || e.which) == 39) {
+          rendition.next();
+        }
+      };
+  
+
+      rendition.on("keyup", keyListener);
+      document.addEventListener("keyup", keyListener, false);
+
+      var current = document.getElementById("currntchp");
+
+   
+
+      rendition.on("rendered", function (section) {
+     
+
+        var current = book.navigation && book.navigation.get(section.href);
+
+        document.getElementById("currntchp").textContent = current.label.trim();
+
+        var nextSection = section.next();
+        var prevSection = section.prev();
+
+        if (nextSection) {
+          nextNav = book.navigation.get(nextSection.href);
+
+          if (nextNav) {
+            nextLabel = nextNav.label;
+          } else {
+            nextLabel = "Next";
+          }
+
+          // next.textContent = nextLabel + " »";
+          document.getElementById("Nextchp").textContent = nextLabel.trim();
+        } else {
+          next.textContent = "";
+        }
+
+        if (prevSection) {
+          prevNav = book.navigation.get(prevSection.href);
+
+          if (prevNav) {
+            prevLabel = prevNav.label;
+          } else {
+            prevLabel = "Previous";
+          }
+
+          //  prev.textContent = "« " + prevLabel;
+          document.getElementById("Prechp").textContent = prevLabel.trim();
+        } else {
+          prev.textContent = "";
+        }
+      });
+
+      const highlightsContainer = document.getElementById(
+        "highlights-container"
+      );
+
+      let storedHighlights =
+        JSON.parse(localStorage.getItem("epub_highlights")) || [];
+
+      // Display stored highlights
+      storedHighlights.forEach(function (highlight) {
+        addHighlightToDisplay(highlight.text, highlight.cfiRange);
+
+        rendition.annotations.add(
+          "highlight",
+          highlight.cfiRange,
+          {},
+          (e) => {}
+        );
+      });
+
+      // Listen for text selection
+      rendition.on("selected", function (cfiRange) {
+        book.getRange(cfiRange).then(function (range) {
+          const selectedText = range.toString().trim();
+          if (selectedText !== "") {
+            highlightText(selectedText, cfiRange);
+          }
+        });
+      });
+
+      // Highlight selected text
+      function highlightText(text, cfiRange) {
+        addHighlightToDisplay(text, cfiRange);
+
+        // Store the highlight locally (in localStorage)
+        const highlight = {
+          text: text,
+          cfiRange: cfiRange,
+        };
+        storedHighlights.push(highlight);
+        localStorage.setItem(
+          "epub_highlights",
+          JSON.stringify(storedHighlights)
+        );
+
+        // Add the highlight to the rendition
+
+        rendition.annotations.add("highlight", cfiRange, {}, (e) => {
+          // Do something when the highlight is added
+        });
+      }
+
+      // Add highlight text to display
+      function addHighlightToDisplay(text, cfiRange) {
+        const highlightItem = document.createElement("div");
+        highlightItem.innerHTML = `
+  
+  <div class=" row fontstyle1 " style="margin:5px;">
+        <span>${text}</span>
+  
+        <button type="button" class="btn btn-default btn-circle btn-xl" onclick="removeHighlight(this, '${cfiRange}')" style='margin-left:10px' ><i class="fa fa-trash"  style = "color:white;" ></i>
+              </button>
+              <button type="button" class="btn btn-default btn-circle btn-xl "   onclick="jumpToHighlight('${cfiRange}')" style='margin-left:260px'><i class="fa fa-reply" aria-hidden="true" style = "color:white;"></i>
+              </button>
+             
+     
+       </div>
+      
+    
+     `;
+
+        highlightsContainer.appendChild(highlightItem);
+      }
+
+      function removeHighlight(button, cfiRange) {
+        const highlightText = button.previousElementSibling.textContent;
+
+        storedHighlights = storedHighlights.filter(function (highlight) {
+          return highlight.text !== highlightText;
+        });
+        localStorage.setItem(
+          "epub_highlights",
+          JSON.stringify(storedHighlights)
+        );
+
+        button.parentNode.remove();
+
+        rendition.annotations.remove(cfiRange, "highlight");
+      }
+
+      const color = localStorage.getItem("BGCOLOR");
+      var reader = document.getElementById("viewer");
+      reader.style.backgroundColor = color;
+
+      rendition.themes.default({
+        body: {
+          "background-color": color,
+        },
+        h2: {
+          "font-size": "32px",
+          color: "purple",
+        },
+        h1: {
+          "font-size": "32px",
+          color: "Green",
+          "text-transform": "uppercase",
+        },
+
+        p: {
+          margin: "10px",
+        },
+      });
+      const Fontsize = localStorage.getItem("FontSize");
+      rendition.themes.fontSize(Fontsize);
+      function jumpToHighlight(cfiRange) {
+        rendition.display(cfiRange);
+      }
+
+
+
+
+
+
+
+      
+      rendition.on("relocated", function (location) {
+       
+        var currentLocation = rendition.currentLocation();
+        localStorage.setItem(
+          "currentLocation",
+          JSON.stringify(currentLocation)
+        );
+      });
+    </script>  
+
+ 
+
+
+
+    <script>
+      // This script is full screen script ___
+      function toggleFullScreen() {
+        var doc = window.document;
+        var docEl = doc.documentElement;
+
+        var requestFullScreen =
+          docEl.requestFullscreen ||
+          docEl.mozRequestFullScreen ||
+          docEl.webkitRequestFullScreen ||
+          docEl.msRequestFullscreen;
+        var cancelFullScreen =
+          doc.exitFullscreen ||
+          doc.mozCancelFullScreen ||
+          doc.webkitExitFullscreen ||
+          doc.msExitFullscreen;
+
+        if (
+          !doc.fullscreenElement &&
+          !doc.mozFullScreenElement &&
+          !doc.webkitFullscreenElement &&
+          !doc.msFullscreenElement
+        ) {
+          requestFullScreen.call(docEl);
+        } else {
+          cancelFullScreen.call(doc);
+        }
+      }
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

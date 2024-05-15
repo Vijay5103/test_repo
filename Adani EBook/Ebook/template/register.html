@@ -1,0 +1,204 @@
+
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Login | ICR</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+           <!-- Bootstrap -->
+ 
+    <!-- Font Awesome -->
+    <link href="static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="static/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="static/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="static/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- PNotify -->
+    <link href="static/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="static/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="static/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
+<!-- App favicon -->
+<link rel="shortcut icon" href="static/new_design/login/images/adani_title.png">
+<!-- Layout Js -->
+<script src="static/new_design/login/js/layout.js"></script>
+<!-- Bootstrap Css -->
+<link href="static/new_design/login/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+<!-- Icons Css -->
+<link href="static/new_design/login/css/icons.min.css" rel="stylesheet" type="text/css" />
+<!-- App Css-->
+<link href="static/new_design/login/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+ <!-- toastr css -->
+<link rel="stylesheet" type="text/css" href="static/new_design/login/toastr/css/toastr.css" media="all">
+
+
+        <style>
+         body{
+         font-family: adani regular!important;
+         background-color: #EDEDED;
+         }
+         .login-submit-button {
+            background: #4E78A8;
+            --bs-btn-hover-bg: #6A92B6;
+            --bs-btn-active-bg: #6A92B6;
+         }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="auth-maintenance d-flex align-items-center min-vh-100">
+            <div class="bg-overlay bg-light"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="auth-full-page-content d-flex min-vh-100 py-sm-5 py-4">
+                            <div class="w-100">
+                                <div class="d-flex flex-column h-100 py-0 py-xl-3">
+                                    <div class="text-center mb-4">
+<!--                                        <a href="#" class="">-->
+<!--                                            <img src="static/new_design/assets/images/logo-dark.png" alt="" height="22" class="auth-logo logo-dark mx-auto">-->
+<!--                                            <img src="static/new_design/assets/images/logo-light.png" alt="" height="22" class="auth-logo logo-light mx-auto">-->
+<!--                                        </a>-->
+<!--                                        <p class="text-muted mt-2">User Experience & Interface Design Strategy Saas Solution</p>-->
+                                    </div>
+                                    
+                     
+                                   
+                                    {% if messages %}
+                                    {% for message in messages %}
+
+                               
+
+
+                                      
+                                    
+                                    <div class="alert alert-danger {{ message.tags}} alert-dismissible fade show my-0 " role="alert">
+                                        <strong> {{ message }} </strong>
+                                    
+                                        <a href="" data-dismiss="alert" class=" float-end "> <span aria-hidden="true" style="font-size: 15px;" > &times;</span></a>
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                    <div class="card my-auto overflow-hidden">
+                                            <div class="row g-0">
+                                                <div class="col-lg-6">
+                                                    <div class="bg-overlay bg-primary"></div>
+                                                    <div class="h-100 bg-auth align-items-end" style="background-image: url('static/new_design/login/images/login_modal.jpg');">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="p-lg-5 p-4">
+                                                        <div>
+                                                            <div class="text-center mt-1">
+                                                                <h4 class="font-size-18">Welcome Back !</h4>
+                                                                <p class="text-muted">Sign Up to continue to ICR Portal.</p>
+                                                            </div>
+
+                                                            <form method="post" class="auth-input"  method="post"  >
+                                                                {% csrf_token %}
+                                                                <div class="mb-2">
+                                                                    <label for="email" class="form-label">Username</label>
+                                                                    
+                                                                    <input type="text" required class="form-control" name="username"  placeholder="Enter Your UserName">
+                                                                </div>
+                                                                <div class="mb-2">
+                                                                    <label for="email" class="form-label">Email</label>
+                                                                    <input type="email" required class="form-control" name="email" id="email" placeholder="Enter Your Email">
+                                                                </div>
+                                                            
+
+                                                                <div class="mb-3">
+                                                                    <label class="form-label" for="password-input">Password</label>
+                                                                    <input type="password" id="password-input" required name="password" class="form-control" placeholder="Enter Password">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label" for="password-input"> Confirm Password</label>
+                                                                    <input type="confirmpassword" id="password-input1" required name="confirmpassword" class="form-control" placeholder="Enter Confirm  Password">
+                                                                </div>
+                                                               
+                                                                <div class="mt-6">
+                                                                    <button class="btn btn-primary w-100 login-submit-button" type="submit">Sign Up</button>
+                                                                    <br>
+                                                                    <button class="btn btn-primary w-100 login-submit-button"  onclick="document.location.href='/login'" style="margin-top: 5px;" type="reset">Login</button>
+                                                                </div>
+
+                                                                
+                                                            </form>
+                                                        </div>
+
+                                                        <div class="mt-4 text-center">
+                                                            <p class="mb-0"> <a href="auth-register.html" class="fw-medium text-primary">  </a> </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card -->
+
+                                    <div class="mt-5 text-center">
+<!--                                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Tocly. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+            </div>
+        </div>
+        
+<!-- JAVASCRIPT -->
+<!-- js -->
+
+<script src="static/new_design/login/js/jquery.min.js"></script>
+<script src="static/new_design/login/js/bootstrap.bundle.min.js"></script>
+<script src="static/new_design/login/js/metisMenu.min.js"></script>
+<script src="static/new_design/login/js/simplebar.min.js"></script>
+<script src="static/new_design/login/js/waves.min.js"></script>
+<!-- Icon -->
+
+<script src="https://unicons.iconscout.com/release/v2.0.1/script/monochrome/bundle.js"></script>
+<script src="static/new_design/login/js/app.js"></script>
+<!-- Custom js for toaster -->
+<script type="text/javascript" src="static/new_design/login/toastr/js/toastr.min.js"></script>
+
+ <!-- PNotify -->
+
+
+
+     <!-- jQuery -->
+     <script src="static/vendors/jquery/dist/jquery.min.js"></script>
+     <!-- Bootstrap -->
+    <script src="static/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+     <!-- FastClick -->
+     <script src="static/vendors/fastclick/lib/fastclick.js"></script>
+     <!-- NProgress -->
+     <script src="static/vendors/nprogress/nprogress.js"></script>
+     <!-- bootstrap-progressbar -->
+     <script src="static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+     <!-- iCheck -->
+     <script src="static/vendors/iCheck/icheck.min.js"></script>
+     <!-- PNotify -->
+     <script src="static/vendors/pnotify/dist/pnotify.js"></script>
+     <script src="static/vendors/pnotify/dist/pnotify.buttons.js"></script>
+     <script src="static/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+ 
+     <!-- Custom Theme Scripts -->
+     <script src="static/build/js/custom.min.js"></script>
+     
+        <script>
+  $(document).ready(function() {
+    
+    
+  });
+</script>
+    </body>
+</html>
